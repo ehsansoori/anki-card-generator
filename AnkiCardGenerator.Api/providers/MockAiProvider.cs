@@ -5,6 +5,8 @@ namespace AnkiCardGenerator.Api.Providers;
 
 public class MockAiProvider : IAiProvider
 {
+    public string Name => "default";
+
     public AiGeneratedContent GenerateContent(string input, string domain, string targetLanguage)
     {
         return new AiGeneratedContent

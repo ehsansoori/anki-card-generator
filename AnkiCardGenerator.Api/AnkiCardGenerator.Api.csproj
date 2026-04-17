@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Exports\" />
-    <Folder Include="NewFolder\" />
     <Folder Include="Prompts\" />
   </ItemGroup>
 

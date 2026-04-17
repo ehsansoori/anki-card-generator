@@ -1,4 +1,5 @@
 ﻿using AnkiCardGenerator.Api.DTOs;
+using AnkiCardGenerator.Api.Factories;
 using AnkiCardGenerator.Api.Interfaces;
 using AnkiCardGenerator.Api.Templates;
 
@@ -6,13 +7,14 @@ namespace AnkiCardGenerator.Api.Services;
 
 public class CardService : ICardService
 {
-    private readonly IDictionaryProvider _dictionaryProvider;
-    private readonly IAiProvider _aiProvider;
+    private readonly DictionaryProviderFactory _dictionaryProviderFactory;
+    private readonly AiProviderFactory _aiProviderFactory;
     private readonly TemplateFactory _templateFactory;
-    public CardService(IDictionaryProvider dictionaryProvider, IAiProvider aiProvider, TemplateFactory templateFactory)
+    public CardService(DictionaryProviderFactory dictionaryProviderFactory,
+    AiProviderFactory aiProviderFactory, TemplateFactory templateFactory)
     {
-        _dictionaryProvider = dictionaryProvider;
-        _aiProvider = aiProvider;
+        _dictionaryProviderFactory = dictionaryProviderFactory;
+        _aiProviderFactory = aiProviderFactory;
         _templateFactory = templateFactory;
     }
 
@@ -20,20 +22,26 @@ public class CardService : ICardService
     {
         var result = new List<CardResponseDto>();
 
+        // select providers
+        var dictionaryProvider = _dictionaryProviderFactory.GetProvider(request.DictionaryProvider);
+        var aiProvider = _aiProviderFactory.GetProvider(request.AiProvider);
+
+        // select template
+        var template = _templateFactory.GetTemplate(request.TemplateName);
+
         foreach (var input in request.Inputs)
         {
-            var dictionaryEntry = _dictionaryProvider.GetEntry(
+            var dictionaryEntry = dictionaryProvider.GetEntry(
                 input,
                 request.SourceLanguage,
                 request.TargetLanguage);
 
-            var aiContent = _aiProvider.GenerateContent(
+            var aiContent = aiProvider.GenerateContent(
                 input,
                 request.Domain,
                 request.TargetLanguage);
 
-            var template = _templateFactory.GetTemplate(request.TemplateName);
-
+           
             var back = template.Format(
              input,
              dictionaryEntry,
