@@ -1,6 +1,7 @@
 using AnkiCardGenerator.Api.Interfaces;
 using AnkiCardGenerator.Api.Providers;
 using AnkiCardGenerator.Api.Services;
+using AnkiCardGenerator.Api.Templates;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<ICardService, CardService>();
 builder.Services.AddScoped<IDictionaryProvider, MockDictionaryProvider>();
 builder.Services.AddScoped<IAiProvider, MockAiProvider>();
-
+builder.Services.AddScoped<ICardTemplate, BasicVocabularyTemplate>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

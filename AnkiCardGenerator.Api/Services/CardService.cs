@@ -1,5 +1,6 @@
 ﻿using AnkiCardGenerator.Api.DTOs;
 using AnkiCardGenerator.Api.Interfaces;
+using AnkiCardGenerator.Api.Templates;
 
 namespace AnkiCardGenerator.Api.Services;
 
@@ -7,11 +8,13 @@ public class CardService : ICardService
 {
     private readonly IDictionaryProvider _dictionaryProvider;
     private readonly IAiProvider _aiProvider;
+    private readonly ICardTemplate _cardTemplate;
 
-    public CardService(IDictionaryProvider dictionaryProvider, IAiProvider aiProvider)
+    public CardService(IDictionaryProvider dictionaryProvider, IAiProvider aiProvider, ICardTemplate template)
     {
         _dictionaryProvider = dictionaryProvider;
         _aiProvider = aiProvider;
+        _cardTemplate = template;
     }
 
     public List<CardResponseDto> GenerateCards(GenerateCardsRequestDto request)
@@ -30,14 +33,11 @@ public class CardService : ICardService
                 request.Domain,
                 request.TargetLanguage);
 
-            var back = $"""
-            Meaning: {dictionaryEntry.Meaning}
-            Phonetic: {dictionaryEntry.Phonetic}
-            Part of Speech: {dictionaryEntry.PartOfSpeech}
-            Example: {aiContent.Example}
-            Example Translation: {aiContent.ExampleTranslation}
-            Notes: {aiContent.Notes}
-            """;
+            var back = _cardTemplate.Format(
+            input,
+            dictionaryEntry,
+            aiContent,
+            request);
 
             result.Add(new CardResponseDto
             {
