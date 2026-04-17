@@ -16,6 +16,7 @@ builder.Services.AddScoped<ICardService, CardService>();
 builder.Services.AddScoped<IDictionaryProvider, MockDictionaryProvider>();
 builder.Services.AddScoped<IAiProvider, MockAiProvider>();
 builder.Services.AddScoped<ICardTemplate, BasicVocabularyTemplate>();
+builder.Services.AddScoped<TemplateFactory>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

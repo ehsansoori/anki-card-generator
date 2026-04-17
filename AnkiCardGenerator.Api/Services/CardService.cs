@@ -8,13 +8,12 @@ public class CardService : ICardService
 {
     private readonly IDictionaryProvider _dictionaryProvider;
     private readonly IAiProvider _aiProvider;
-    private readonly ICardTemplate _cardTemplate;
-
-    public CardService(IDictionaryProvider dictionaryProvider, IAiProvider aiProvider, ICardTemplate template)
+    private readonly TemplateFactory _templateFactory;
+    public CardService(IDictionaryProvider dictionaryProvider, IAiProvider aiProvider, TemplateFactory templateFactory)
     {
         _dictionaryProvider = dictionaryProvider;
         _aiProvider = aiProvider;
-        _cardTemplate = template;
+        _templateFactory = templateFactory;
     }
 
     public List<CardResponseDto> GenerateCards(GenerateCardsRequestDto request)
@@ -33,11 +32,13 @@ public class CardService : ICardService
                 request.Domain,
                 request.TargetLanguage);
 
-            var back = _cardTemplate.Format(
-            input,
-            dictionaryEntry,
-            aiContent,
-            request);
+            var template = _templateFactory.GetTemplate(request.TemplateName);
+
+            var back = template.Format(
+             input,
+             dictionaryEntry,
+             aiContent,
+             request);
 
             result.Add(new CardResponseDto
             {

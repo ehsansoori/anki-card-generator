@@ -5,10 +5,12 @@ namespace AnkiCardGenerator.Api.Templates
 {
     public interface ICardTemplate
     {
+        string Name { get; }
+
         string Format(
-        string input,
-        DictionaryEntry dictionary,
-        AiGeneratedContent aiContent,
-        GenerateCardsRequestDto request);
+            string input,
+            DictionaryEntry dictionary,
+            AiGeneratedContent aiContent,
+            GenerateCardsRequestDto request);
     }
 }
