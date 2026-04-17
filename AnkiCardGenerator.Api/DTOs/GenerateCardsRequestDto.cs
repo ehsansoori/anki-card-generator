@@ -2,6 +2,20 @@
 {
     public class GenerateCardsRequestDto
     {
-        public List<string> Words { get; set; } = new();
+        public List<string> Inputs { get; set; } = new();
+
+        public string InputType { get; set; } = "word";
+
+        public string SourceLanguage { get; set; } = "en";
+
+        public string TargetLanguage { get; set; } = "fa";
+
+        public string Domain { get; set; } = "language";
+
+        public string TemplateName { get; set; } = "basic-vocabulary";
+
+        public string DictionaryProvider { get; set; } = "default";
+
+        public string AiProvider { get; set; } = "default";
     }
 }

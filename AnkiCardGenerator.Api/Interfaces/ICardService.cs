@@ -4,6 +4,6 @@ namespace AnkiCardGenerator.Api.Interfaces
 {
     public interface ICardService
     {
-        List<CardResponseDto> GenerateCards(List<string> words);
+        List<CardResponseDto> GenerateCards(GenerateCardsRequestDto request);
     }
 }

@@ -18,7 +18,7 @@ namespace AnkiCardGenerator.Api.Controllers
         [HttpPost("generate")]
         public IActionResult Generate([FromBody] GenerateCardsRequestDto request)
         {
-            var result = _cardService.GenerateCards(request.Words);
+            var result = _cardService.GenerateCards(request);
             return Ok(result);
         }
     }

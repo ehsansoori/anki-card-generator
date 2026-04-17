@@ -5,13 +5,18 @@ namespace AnkiCardGenerator.Api.Services
 {
     public class CardService : ICardService
     {
-        public List<CardResponseDto> GenerateCards(List<string> words)
+        public List<CardResponseDto> GenerateCards(GenerateCardsRequestDto request)
         {
-            return words.Select(word => new CardResponseDto
+           var result = new List<CardResponseDto>();
+            foreach (var input in request.Inputs)
             {
-                Front = word,
-                Back = $"Meaning of {word} (mock data)"
-            }).ToList();
+                result.Add(new CardResponseDto
+                {
+                    Front =input,
+                    Back = $"Generated card for {input} with template {request.TemplateName} in domain {request.Domain} using {request.AiProvider} and {request.DictionaryProvider}"
+                });
+            }
+            return result;
         }
     }
 }
