@@ -1,14 +1,14 @@
 # Anki Card Generator API
 
-A simple and extensible ASP.NET Core Web API that generates flashcards for Anki using AI-ready architecture.
+An extensible ASP.NET Core Web API for generating smart flashcards using AI and dictionary providers.
 
 ## 🚀 Features
 
-- Generate flashcards from words or sentences
-- Clean architecture (Controller → Service → DTO)
-- Ready for AI integration (OpenAI, dictionary APIs)
-- Swagger UI for easy testing
-- Designed for future expansion (Anki export, mobile app, etc.)
+- Multi-language support (EN → FA, ...)
+- Pluggable AI providers (ChatGPT, etc.)
+- Pluggable dictionary providers
+- Template-based card generation
+- Clean and extensible architecture
 
 ## 🛠️ Tech Stack
 
@@ -18,13 +18,4 @@ A simple and extensible ASP.NET Core Web API that generates flashcards for Anki 
 
 ## 📦 Project Structure
 
-- Controllers → API endpoints
-- Services → Business logic
-- DTOs → Data transfer objects
-
-## 📌 API Endpoint
-
-### Generate Cards
-
-```http
-POST /api/cards/generate
+- Controllers
