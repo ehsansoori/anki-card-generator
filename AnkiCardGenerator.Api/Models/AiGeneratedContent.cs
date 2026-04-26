@@ -2,8 +2,10 @@
 {
     public class AiGeneratedContent
     {
-        public string Example { get; set; } = string.Empty;
-        public string ExampleTranslation { get; set; } = string.Empty;
-        public string Notes { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public string Provider { get; set; } = string.Empty;
+        public string TargetLanguage { get; set; } = string.Empty;
+        public string Domain { get; set; } = string.Empty;
+        public string PromptName { get; set; } = string.Empty;
     }
 }

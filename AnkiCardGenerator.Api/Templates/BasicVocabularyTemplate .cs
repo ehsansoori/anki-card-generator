@@ -20,8 +20,7 @@ Meaning: {dictionary.Meaning}
 Phonetic: {dictionary.Phonetic}
 Part of Speech: {dictionary.PartOfSpeech}
 
-Example: {aiContent.Example}
-Translation: {aiContent.ExampleTranslation}
+AI Content: {aiContent.Content}
 """;
         }
     }

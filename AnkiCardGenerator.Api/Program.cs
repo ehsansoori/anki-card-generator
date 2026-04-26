@@ -1,5 +1,6 @@
 using AnkiCardGenerator.Api.Factories;
 using AnkiCardGenerator.Api.Interfaces;
+using AnkiCardGenerator.Api.Prompts;
 using AnkiCardGenerator.Api.Providers;
 using AnkiCardGenerator.Api.Services;
 using AnkiCardGenerator.Api.Templates;
@@ -15,7 +16,16 @@ builder.Services.AddOpenApi();
 //Add new services
 builder.Services.AddScoped<ICardService, CardService>();
 builder.Services.AddScoped<IDictionaryProvider, MockDictionaryProvider>();
+//AI Provider
+builder.Services.AddHttpClient<OpenAiProvider>();
 builder.Services.AddScoped<IAiProvider, MockAiProvider>();
+builder.Services.AddScoped<IAiProvider, OpenAiProvider>();
+//AI Prompt
+builder.Services.AddScoped<IAiPrompt, ExampleOnlyPrompt>();
+builder.Services.AddScoped<IAiPrompt, ExampleWithExplanationPrompt>();
+builder.Services.AddScoped<AiPromptFactory>();
+
+
 builder.Services.AddScoped<DictionaryProviderFactory>();
 builder.Services.AddScoped<AiProviderFactory>();
 builder.Services.AddScoped<ICardTemplate, BasicVocabularyTemplate>();

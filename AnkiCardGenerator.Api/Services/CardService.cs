@@ -17,7 +17,7 @@ public class CardService : ICardService
         _aiProviderFactory = aiProviderFactory;
         _templateFactory = templateFactory;
     }
-
+     
     public List<CardResponseDto> GenerateCards(GenerateCardsRequestDto request)
     {
         var result = new List<CardResponseDto>();
@@ -39,7 +39,7 @@ public class CardService : ICardService
             var aiContent = aiProvider.GenerateContent(
                 input,
                 request.Domain,
-                request.TargetLanguage);
+                request.TargetLanguage, request.PromptName);
 
            
             var back = template.Format(

@@ -7,13 +7,17 @@ public class MockAiProvider : IAiProvider
 {
     public string Name => "default";
 
-    public AiGeneratedContent GenerateContent(string input, string domain, string targetLanguage)
+    public AiGeneratedContent GenerateContent(string input, string domain, string targetLanguage,string promptName)
     {
+        //throw new Exception("MockAiProvider is being used");
+
         return new AiGeneratedContent
         {
-            Example = $"Example sentence with {input}",
-            ExampleTranslation = $" translate for: {input}",
-            Notes = $"Mock note for {input}"
+            Content = $"Mock generated content for '{input}'",
+            Provider = Name,
+            TargetLanguage = targetLanguage,
+            Domain = domain,
+            PromptName = promptName
         };
     }
 }
