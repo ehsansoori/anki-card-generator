@@ -7,7 +7,7 @@ namespace AnkiCardGenerator.Api.Templates
     {
         string Name { get; }
 
-        string Format(
+        CardBackDto Format(
             string input,
             DictionaryEntry dictionary,
             AiGeneratedContent aiContent,

@@ -50,7 +50,7 @@ public class CardService : ICardService
             result.Add(new CardResponseDto
             {
                 Front = input,
-                Back = back
+                Back = back 
             });
         }
 
