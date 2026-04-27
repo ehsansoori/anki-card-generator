@@ -6,6 +6,5 @@
         public string Provider { get; set; } = string.Empty;
         public string TargetLanguage { get; set; } = string.Empty;
         public string Domain { get; set; } = string.Empty;
-        public string PromptName { get; set; } = string.Empty;
     }
 }

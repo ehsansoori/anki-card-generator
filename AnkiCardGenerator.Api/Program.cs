@@ -21,8 +21,6 @@ builder.Services.AddHttpClient<OpenAiProvider>();
 builder.Services.AddScoped<IAiProvider, MockAiProvider>();
 builder.Services.AddScoped<IAiProvider, OpenAiProvider>();
 //AI Prompt
-builder.Services.AddScoped<IAiPrompt, ExampleOnlyPrompt>();
-builder.Services.AddScoped<IAiPrompt, ExampleWithExplanationPrompt>();
 builder.Services.AddScoped<AiPromptFactory>();
 
 

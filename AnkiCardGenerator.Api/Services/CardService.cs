@@ -38,8 +38,7 @@ public class CardService : ICardService
 
             var aiContent = aiProvider.GenerateContent(
                 input,
-                request.Domain,
-                request.TargetLanguage, request.PromptName);
+              request);
 
            
             var back = template.Format(

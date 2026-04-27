@@ -1,4 +1,5 @@
-﻿using AnkiCardGenerator.Api.Models;
+﻿using AnkiCardGenerator.Api.DTOs;
+using AnkiCardGenerator.Api.Models;
 
 namespace AnkiCardGenerator.Api.Interfaces
 {
@@ -6,7 +7,7 @@ namespace AnkiCardGenerator.Api.Interfaces
     {
         string Name { get; }
 
-        AiGeneratedContent GenerateContent(string input, string domain, string targetLanguage,string promptName);
+        AiGeneratedContent GenerateContent(string input, GenerateCardsRequestDto request);
 
     }
 }

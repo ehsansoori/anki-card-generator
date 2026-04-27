@@ -1,4 +1,5 @@
-﻿using AnkiCardGenerator.Api.Factories;
+﻿using AnkiCardGenerator.Api.DTOs;
+using AnkiCardGenerator.Api.Factories;
 using AnkiCardGenerator.Api.Interfaces;
 using AnkiCardGenerator.Api.Models;
 using System.Net.Http.Headers;
@@ -25,7 +26,7 @@ namespace AnkiCardGenerator.Api.Providers
 
         }
 
-        public AiGeneratedContent GenerateContent(string input, string domain, string targetLanguage, string promptName)
+        public AiGeneratedContent GenerateContent(string input, GenerateCardsRequestDto request)
         {
             //throw new Exception("OpenAiProvider is being used");
 
@@ -37,8 +38,8 @@ namespace AnkiCardGenerator.Api.Providers
                 throw new InvalidOperationException("OpenAI:ApiKey is missing.");
             }
 
-            var selectedPrompt = _promptFactory.GetPrompt(promptName);
-            var prompt = selectedPrompt.Build(input, domain, targetLanguage);
+            var prompt = _promptFactory.BuildPrompt(input, request);
+
 
             var requestBody = new
             {
@@ -46,17 +47,17 @@ namespace AnkiCardGenerator.Api.Providers
                 input = prompt
             };
 
-            using var request = new HttpRequestMessage(
+            using var httpRequest = new HttpRequestMessage(
                 HttpMethod.Post,
                 "https://api.openai.com/v1/responses");
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
-            request.Content = new StringContent(
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+            httpRequest.Content = new StringContent(
                 JsonSerializer.Serialize(requestBody),
                 Encoding.UTF8,
                 "application/json");
 
-            using var response = _httpClient.SendAsync(request)
+            using var response = _httpClient.SendAsync(httpRequest)
                 .GetAwaiter()
                 .GetResult();
 
@@ -76,8 +77,8 @@ namespace AnkiCardGenerator.Api.Providers
             {
                 Content = content,
                 Provider = Name,
-                TargetLanguage = targetLanguage,
-                Domain = domain,
+                TargetLanguage = request.TargetLanguage,
+                Domain = request.Domain,
             };
         }
 

@@ -2,7 +2,8 @@
 
 namespace AnkiCardGenerator.Api.Prompts
 {
-    public class ExampleOnlyPrompt: IAiPrompt
+    //its not use any more just keep it as an example of a simple prompt
+    public class ExampleOnlyPrompt
     {
 
         public string Name => "example-only";

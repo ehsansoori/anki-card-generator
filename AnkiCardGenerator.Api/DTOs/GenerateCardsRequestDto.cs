@@ -18,7 +18,8 @@
 
         public string AiProvider { get; set; } = "default";
 
-        public string PromptName { get; set; } = "example-only";
+        public CardGenerationOptionsDto Options { get; set; } = new();
+               
 
     }
 }

@@ -1,25 +1,74 @@
-﻿using AnkiCardGenerator.Api.Interfaces;
+﻿using System.Text;
+using AnkiCardGenerator.Api.DTOs;
 
 namespace AnkiCardGenerator.Api.Factories
 {
     public class AiPromptFactory
     {
-        private readonly IEnumerable<IAiPrompt> _prompts;
-
-        public AiPromptFactory(IEnumerable<IAiPrompt> prompts)
+        public string BuildPrompt(string input, GenerateCardsRequestDto request)
         {
-            _prompts = prompts;
-        }
+            var options = request.Options ?? new CardGenerationOptionsDto();
+            var exampleCount = options.ExampleCount < 1 ? 1 : options.ExampleCount;
+            var tone = string.IsNullOrWhiteSpace(options.Tone) ? "neutral" : options.Tone;
+            var difficulty = string.IsNullOrWhiteSpace(options.DifficultyLevel)
+                ? "beginner"
+                : options.DifficultyLevel;
 
-        public IAiPrompt GetPrompt(string name)
-        {
-            var prompt = _prompts.FirstOrDefault(p =>
-                string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase));
+            var fields = new List<string>
+            {
+                "\"word\": \"input word or phrase\""
+            };
 
-            if (prompt == null)
-                throw new Exception($"Prompt '{name}' not found");
+            if (options.IncludePhonetic)
+                fields.Add("\"phonetic\": \"phonetic transcription\"");
 
-            return prompt;
+            if (options.IncludePartOfSpeech)
+                fields.Add("\"partOfSpeech\": \"part of speech\"");
+
+            if (options.IncludeTargetMeaning)
+                fields.Add($"\"targetMeaning\": \"meaning in {request.TargetLanguage}\"");
+
+            if (options.IncludeEnglishMeaning)
+                fields.Add("\"englishMeaning\": \"meaning in English\"");
+
+            var exampleFields = new List<string>
+            {
+                "\"sentence\": \"example sentence\""
+            };
+
+            if (options.IncludeExampleTranslations)
+                exampleFields.Add($"\"translation\": \"translation in {request.TargetLanguage}\"");
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine("You are generating structured flashcard content for an Anki card.");
+            sb.AppendLine("Return ONLY valid JSON.");
+            sb.AppendLine("Do not include markdown or explanation.");
+            sb.AppendLine();
+            sb.AppendLine($"Input: {input}");
+            sb.AppendLine($"Source language: {request.SourceLanguage}");
+            sb.AppendLine($"Target language: {request.TargetLanguage}");
+            sb.AppendLine($"Domain: {request.Domain}");
+            sb.AppendLine($"Tone: {tone}");
+            sb.AppendLine($"Difficulty level: {difficulty}");
+            sb.AppendLine($"Generate exactly {exampleCount} examples.");
+            sb.AppendLine();
+            sb.AppendLine("Use this JSON shape:");
+            sb.AppendLine("{");
+
+            foreach (var field in fields)
+            {
+                sb.AppendLine($"  {field},");
+            }
+
+            sb.AppendLine("  \"examples\": [");
+            sb.AppendLine($"    {{ {string.Join(", ", exampleFields)} }}");
+            sb.AppendLine("  ]");
+            sb.AppendLine("}");
+            sb.AppendLine();
+            sb.AppendLine("The examples array must contain exactly the requested number of items.");
+
+            return sb.ToString();
         }
     }
 }
